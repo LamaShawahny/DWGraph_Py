@@ -1,6 +1,6 @@
 # This graph represnts the graph
-from NodeData import NodeData
-from  EdgeData import EdgeData
+from src.NodeData import NodeData
+from  src.EdgeData import EdgeData
 class DWGraph() :
    def __init__(self):
          self._nodes = {}  # this Dictionary contains our graph nodes
@@ -68,9 +68,9 @@ class DWGraph() :
 
 
    def add_node(self, node_id: int, pos: tuple = None):
-       NewNode = NodeData(node_id)
-       if not self._nodes.__contains__(NewNode):
-           self._nodes[node_id]=NewNode
+       newNode = NodeData(node_id)
+       if newNode not in self._nodes:
+           self._nodes[node_id]=newNode
            self._MC = self._MC + 1
            return True
 
@@ -80,7 +80,7 @@ class DWGraph() :
        else: newNode= None
        if self._nodes.__contains__(node_id):
            del self._nodes[node_id]
-           self._MC= self.Mc+1
+           self._MC= self._MC+1
            list = self._edges.values()
            for edge in list :
                if edge.src is node_id or edge.dest is node_id:
