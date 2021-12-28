@@ -16,9 +16,9 @@ class DWGraph() :
    def get_all_v(self):
        return self._nodes
 
-   def all_in_edges_of_node(self, id1: int):
+   def get_all_edges(self):
 
-       return self._edges # edges-> edge data-> (id1 is dest) rfeturn dic of the sources
+       return self._edges.values() # edges-> edge data-> (id1 is dest) rfeturn dic of the sources
 
    def all_in_edges_of_node(self, id1: int):
        in_edges = []

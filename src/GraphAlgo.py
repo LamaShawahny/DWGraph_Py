@@ -16,8 +16,9 @@ class GraphAlgo:
         self._pred =[]
         self._dist =[]
         self._visited=[]
-        self._nill = 0
+        self._nill = -1
         self._graph =graph
+
 
     def get_graph(self):
         return self._graph
@@ -50,43 +51,47 @@ class GraphAlgo:
             json.dump(data_edges, outfile)
             json.dump(data_nodes, outfile)
 
-    def Dikstra(self, start: int ,Graph: DWGraph):
-        for i in range[len(self._pred)] :
-            self._pred[i]= self._nill
-            self._dist = float('inf')
-            self._visited[i]=False
-        self._dist[start]=0
-        ##iterator
-        for n in self._graph.get_all_v:
+    def Dikstra(self, start: int):
+        for i in range(self._graph.v_size()):
+            self._pred.append(self._nill)
+            self._dist.append(float('inf'))
+            self._visited.append( False)
+        print(len(self._dist))
+        self._dist[start] = 0
+
+        for n in self._graph.get_all_v():
             self._DikstraQ.append(n)
 
-        while not self._DikstraQ.empty:
-            u = self._graph.getNode(GraphAlgo.ExtractMin(self._DikstraQ))
-            del self._DikstraQ[self._graph.getNode(GraphAlgo.ExtractMin(self._DikstraQ))]
+        while len(self._DikstraQ) > 0:
+            u = self._graph.getNode(GraphAlgo.ExtractMin(self,self._DikstraQ))
+            if self._graph.getNode(GraphAlgo.ExtractMin(self,self._DikstraQ)) is not None:
+                del self._DikstraQ[self._graph.getNode(GraphAlgo.ExtractMin(self,self._DikstraQ)).key]
             for e in self._graph.get_all_edges():
-                v = e.getDest()
-                if not self._visited[v]:
-                    t = self._dist[u.getKey()]+ self._graph.getEdge(u.getKey,v).getWeight()
-                    if not self._dist[v]>t :
-                        self._dist[v]= t
-                        self._pred[v]= u.getKey
-        self._visited[u.getKey]=True
+                v = e.dest
+                print(len(self._visited))
+                if self._visited[v.key]== False:
+                    if self._graph.getEdge(u.key,v) is not None:
+                        t = self._dist[u.key] + self._graph.getEdge(u.key,v).weight
+                        if not self._dist[v] > t:
+                            self._dist[v] = t
+                            self._pred[v] = u.key
+        self._visited[u.key]=True
 
     def ExtractMin(self,list):
         index= -1
         min = float('inf')
-        for i in range[len(self._q)]:
-            if self._dist[self._q[i]]<= min:
-                min = self._dist[self._q[i]]
-                index = self._q[i]
-        return  index
+        for i in range(len(list)-1):
+            if self._dist[list[i]] <= min:
+                min = self._dist[list[i]]
+                index = list[i]
+        return index
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         if id1 == id2:
             return -1, []
         if self._graph.getNode(id1) is None or self._graph.getNode(id2) is None :
             return -1 ,[]
-        GraphAlgo.Dikstra(id1,id2)
+        GraphAlgo.Dikstra(self,id1)
         path=[]
         t = id2
         n = self._graph.getNode(t)
@@ -114,7 +119,7 @@ class GraphAlgo:
                     crt= crt +1
 
                 degrees[i]=crt
-                if degrees[i] is 1:
+                if degrees[i] == 1:
                     leavs.append(i)
             maxLevel=0
             while(nVert>2):
@@ -125,7 +130,7 @@ class GraphAlgo:
                     degrees[v]=degrees[v]-1
                     self._graph.remove_edge(v,leaf)
                     nVert=nVert-1
-                    if degrees[v] is 1:
+                    if degrees[v] == 1:
                         leavs.append(v)
                         levels[v]=levels[leaf]+1
                         maxLevel= max(maxLevel,levels[v])
@@ -134,7 +139,7 @@ class GraphAlgo:
                 if levels[i] is maxLevel:
                     centers.append(i)
             numCenters = len(centers)
-            if numCenters is 2:
+            if numCenters == 2:
                 radius =maxLevel+1
                 diameter = 2*radius-1
             else:
@@ -164,7 +169,7 @@ class GraphAlgo:
             for edge in self._graph.all_out_edges_of_node(node.key):
                 i = self._graph.getNode(edge)
                 if i is not None:
-                    if color[i.key] is "white":
+                    if color[i.key] == "white":
                         color[i.key] = "gray"
                         d[i.key] = d[node.key] + 1
                         p[i.key] = node

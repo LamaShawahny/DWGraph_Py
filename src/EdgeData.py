@@ -11,10 +11,7 @@ class EdgeData :
         self.src = src
         self.dest = dest
         self.weight = weight
-    def getDest(self):
-        return self.dest
-    def getWeight(self):
-        return self.weight
+
 
 # src is the source node of the edge
 # dest is the destination the of the edge
