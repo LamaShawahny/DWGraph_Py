@@ -18,6 +18,8 @@ class TestGraphAlgo(TestCase):
         gg.add_node(5)
         gg.add_node(6)
         gg.add_node(7)
+        gg.add_node(8)
+        gg.add_node(9)
         gg.add_edge(1, 2, 10)
         gg.add_edge(2, 3, 9)
         gg.add_edge(5, 7, 2)
