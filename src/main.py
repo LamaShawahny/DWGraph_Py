@@ -1,4 +1,4 @@
-from DiGraph import DiGraph
+from DWGraph import DWGraph
 from GraphAlgo import GraphAlgo
 
 
@@ -28,7 +28,7 @@ def check0():
     This function tests the naming (main methods of the DiGraph class, as defined in GraphInterface.
     :return:
     """
-    g = DiGraph()  # creates an empty directed graph
+    g = DWGraph()  # creates an empty directed graph
     for n in range(4):
         g.add_node(n)
     g.add_edge(0, 1, 1)
@@ -43,7 +43,7 @@ def check0():
     print(g.all_in_edges_of_node(1))
     print(g.all_out_edges_of_node(1))
     g_algo = GraphAlgo(g)
-    print(g_algo.shortest_path(0, 3))
+    # print(g_algo.shortest_path(0, 3))
     g_algo.plot_graph()
 
 
@@ -87,7 +87,7 @@ def check3():
     """ This function tests the naming, basic testing over A5 json file.
       :return:
       """
-    g = DiGraph()  # creates an empty directed graph
+    g = DWGraph()  # creates an empty directed graph
     for n in range(5):
         g.add_node(n)
     g.add_edge(0, 1, 1)
@@ -99,10 +99,10 @@ def check3():
     g.add_edge(3, 4, 2.1)
     g.add_edge(4, 2, .5)
     g_algo = GraphAlgo(g)
-    print(g_algo.centerPoint())
-    print(g_algo.TSP([1, 2, 4]))
+    # print(g_algo.centerPoint())
+    # print(g_algo.TSP([1, 2, 4]))
     g_algo.plot_graph()
 
 
 if __name__ == '__main__':
-    check()
+    check3()

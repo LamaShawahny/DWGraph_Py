@@ -17,23 +17,21 @@ class DWGraph() :
        return self._nodes
 
    def get_all_edges(self):
-
        return self._edges.values() # edges-> edge data-> (id1 is dest) rfeturn dic of the sources
 
    def all_in_edges_of_node(self, id1: int):
        in_edges = []
        for e in self._edges:
-           if e.src == id1:
+           if self._edges[e].src == id1:
                in_edges[e.dest] = e.weight
        return in_edges
 
    def all_out_edges_of_node(self, id1: int):
        out_edges = []
        for e in self._edges:
-           if e.dest == id1:
+           if self._edges[e].dest == id1:
                out_edges[e.src] = e.weight
        return out_edges
-
 
    def get_mc(self):
        return self._MC
@@ -66,7 +64,6 @@ class DWGraph() :
        self._MC = self._MC +1
        return True
 
-
    def add_node(self, node_id: int, pos: tuple = None):
        newNode = NodeData(node_id)
        if newNode not in self._nodes:
@@ -89,6 +86,7 @@ class DWGraph() :
                    self._MC = self._MC + 1
            return True
        return
+
    def remove_edge(self, node_id1: int, node_id2: int):
         EdgeStr = str(node_id1) + "," + str(node_id2)
         if self._edges.__contains__(EdgeStr):

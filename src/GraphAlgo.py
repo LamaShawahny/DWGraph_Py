@@ -19,7 +19,6 @@ class GraphAlgo:
         self._nill = -1
         self._graph =graph
 
-
     def get_graph(self):
         return self._graph
 
@@ -216,7 +215,23 @@ class GraphAlgo:
 
         return path
 
+    def plot_graph(self) -> None:
+        vertex = self._graph.get_all_v()
+        ed = self._graph.get_all_edges()
+        for node in vertex.values():
+            x = node.location[0]
+            y = node.location[1]
+            plt.plot(x, y, markersize=12, marker="o", color="red")
+            plt.text(x, y, str(node.get_key()), color="green", fontsize=13)
 
+        for edge in ed.values():
+            dstx = vertex[edge.getDest()].location[0]
+            dsty = vertex[edge.getDest()].location[1]
+            srcx = vertex[edge.getSrc()].location[0]
+            srcy = vertex[edge.getSrc()].location[1]
+            plt.annotate("", xy=(srcx, srcy), xytext=(dstx, dsty), arrowprops={'arrowstyle': "<-", 'lw': 3})
+
+        plt.show()
 
 
 
