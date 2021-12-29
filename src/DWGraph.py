@@ -20,17 +20,17 @@ class DWGraph() :
        return self._edges.values() # edges-> edge data-> (id1 is dest) rfeturn dic of the sources
 
    def all_in_edges_of_node(self, id1: int):
-       in_edges = []
+       in_edges = {}
        for e in self._edges:
            if self._edges[e].src == id1:
-               in_edges[e.dest] = e.weight
+               in_edges[self._edges[e].dest] = self._edges[e].weight
        return in_edges
 
    def all_out_edges_of_node(self, id1: int):
-       out_edges = []
+       out_edges = {}
        for e in self._edges:
            if self._edges[e].dest == id1:
-               out_edges[e.src] = e.weight
+               out_edges[self._edges[e].src] = self._edges[e].weight
        return out_edges
 
    def get_mc(self):

@@ -10,11 +10,11 @@ class GraphAlgo:
     def __init__(self,graph):
         self._q = []
         self._DikstraQ = []
-        self._color=[]
-        self._p= []
+        self._color = []
+        self._p = []
         self._d =[]
-        self._pred =[]
-        self._dist =[]
+        self._pred = []
+        self._dist = []
         self._visited=[]
         self._nill = -1
         self._graph =graph
