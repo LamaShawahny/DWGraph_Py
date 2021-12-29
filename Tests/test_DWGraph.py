@@ -19,29 +19,36 @@ class TestDWGraph(TestCase):
         y = 8
         self.assertEqual(x, y)
 
-    def test_add_edge(self):
-        gg = DWGraph()
-        gg.add_node(1)
-        gg.add_node(2)
-        gg.add_node(3)
-        gg.add_node(4)
-        gg.add_node(5)
-        gg.add_node(6)
-        gg.add_node(7)
-        gg.add_node(8)
-        gg.add_edge(1, 2, 10)
-        gg.add_edge(1, 3, 9)
-        gg.add_edge(5, 7, 2)
-        gg.add_edge(2, 1, 3)
-        gg.add_edge(1, 2, 2)
-        gg.add_edge(3, 2, 9)
-        gg.remove_edge(1, 2)
-        gg.remove_edge(7, 8)
-        x = gg.e_size()
-        y = 4
-        self.assertEqual(x, y)
+    def test_get_all_v(self):
+        gr = DWGraph()
+        for n in range(7):
+            gr.add_node(n)
 
+        gr.add_edge(4, 1, 1)
+        gr.add_edge(1, 0, 0.5)
+        gr.add_edge(1, 2, 1.313)
+        gr.add_edge(7, 2, 12)
+        gr.add_edge(1, 7, 40)
+        gr.add_edge(4, 5, 12)
+        gr.add_edge(3, 4, 22)
+        gr.add_edge(4, 3, 13)
+        gr.add_edge(6, 5, 19)
 
+        nodes = gr.get_all_v()
+
+        assert len(nodes) == 6 + 1
+
+        assert isinstance(nodes, dict)
+        for i in range(6):
+            assert i in nodes.keys()
+
+    def test_e_size(self):
+        g = DWGraph()
+        for n in range(4):
+            g.add_node(n)
+        g.add_edge(1,2,3)
+        g.add_edge(0,3,0)
+        assert 2==g.e_size()
 
     def test_remove_node(self):
         gg = DWGraph()
@@ -61,30 +68,6 @@ class TestDWGraph(TestCase):
         y = 6
         self.assertEqual(x, y)
 
-
-    def test_get_all_v(self):
-        gr = DWGraph()
-        for n in range(7):
-            gr.add_node(n)
-
-        gr.add_edge(4, 1, 1)
-        gr.add_edge(1, 0, 0.5)
-        gr.add_edge(1, 2, 1.313)
-        gr.add_edge(7, 2, 12)
-        gr.add_edge(1, 7, 40)
-        gr.add_edge(4, 5, 12)
-        gr.add_edge(3, 4, 22)
-        gr.add_edge(4, 3, 13)
-        gr.add_edge(6, 5, 19)
-
-        nodes = gr.get_all_v()
-
-        assert len(nodes) == 6+1
-
-        assert isinstance(nodes, dict)
-        for i in range(6):
-            assert i in nodes.keys()
-
     def test_all_in_edges_of_node(self):
         gr = DWGraph()
         for n in range(7):
@@ -98,20 +81,16 @@ class TestDWGraph(TestCase):
         gr.add_edge(2, 1, 10)
         gr.add_edge(4, 5, 12)
         gr.add_edge(3, 4, 22)
-        gr.add_edge(4, 6, 3)
         gr.add_edge(6, 3, 18)
 
         edge_in = gr.all_in_edges_of_node(0)
-        assert 1 in edge_in
+        assert 2 not in edge_in.keys()
 
         edge_in = gr.all_in_edges_of_node(1)
-        assert 0 not in edge_in
+        assert 0 not in edge_in.keys()
 
         edge_in = gr.all_in_edges_of_node(3)
-        for a in [1,2,6]:
-            assert a in edge_in.values()
-
-
+        assert 1 in edge_in.keys()
 
     def test_all_out_edges_of_node(self):
         gr = DWGraph()
@@ -125,10 +104,10 @@ class TestDWGraph(TestCase):
         gr.add_edge(2, 4, 1.15)
 
         edge_in = gr.all_out_edges_of_node(2)
-        assert 1 in edge_in
+        assert 1 in edge_in.keys()
 
-        edge_in = gr.all_out_edges_of_node(4)
-        assert 5 in edge_in
+        edge_in = gr.all_out_edges_of_node(1)
+        assert 0 in edge_in.keys()
 
         assert isinstance(edge_in, dict) == True
 
@@ -163,6 +142,38 @@ class TestDWGraph(TestCase):
         gr.remove_node(8)
         assert gr.get_mc() == mc + 3
 
+    def test_getNode(self):
+        gr = DWGraph()
+        gr.add_node(1)
+        gr.add_node(2)
+        gr.remove_node(1)
+
+        k = gr.getNode(1)
+        n =None
+        self.assertEquals(k, n)
+
+        gr.add_node(1)
+        k = gr.getNode(1)
+        n = None
+        self.assertNotEqual(k, n)
+
+    def test_getEdge(self):
+        gr = DWGraph()
+        gr.add_node(1)
+        gr.add_node(2)
+
+        gr.add_edge(1,2,3)
+
+        k = gr.getEdge(1,2)
+        n = None
+        self.assertNotEquals(k, n)
+
+
+        gr.remove_edge(1,2)
+        k = gr.getEdge(1,2)
+        n = None
+        self.assertEqual(k, n)
+
     def test_add_edge(self):
         gr = DWGraph()
         for n in range(7):
@@ -190,7 +201,16 @@ class TestDWGraph(TestCase):
         gr.add_node(12)
         assert gr.v_size() == 8+1
 
-    def test_remove_edge(self):
+    def test_remove_node(self):
+     g= DWGraph()
+     for n in range(4):
+         g.add_node(n)
+     g.remove_node(1)
+     b = g.getNode(1)
+     assert b is None
+
+
+def test_remove_edge(self):
         gr = DWGraph()
         for n in range(7):
             gr.add_node(n)
