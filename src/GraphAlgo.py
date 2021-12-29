@@ -1,9 +1,9 @@
 # Here is the Algorithms for our graph
 from typing import List
 import math
-from NodeData import NodeData
-from EdgeData import EdgeData
-from DWGraph import DWGraph
+from src.NodeData import NodeData
+from src.EdgeData import EdgeData
+from src.DWGraph import DWGraph
 import queue
 import json
 class GraphAlgo:
