@@ -15,6 +15,7 @@ Therefore, the appropriate data structure for performing operations on a very la
 - 
 
 ### Methods :
+#### DWGraph :
 - getNode-Return vertex by key ,complexity O(1)
 - getEdge -Return edge between 2 vertices - performed by checking the existence of one vertex in the list of neighbors .
 - addNode -Adding (to each HashMap) is in complexity O(1).
