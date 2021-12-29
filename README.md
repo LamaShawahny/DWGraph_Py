@@ -44,11 +44,10 @@ Complexity of this algorithm is : O(v+e) where v=vertices, e=edges of the graph.
 - The Main  functions  performed:
   - **init :** Initializes the class .
   - **copy:** Deep copy to graph - In this method the implementation made using copy constructor on directed_weighted_graph Class.
-  - **Check if the graph is connected :** in this function we used BFS Algorithm.
-  - **shortest path :**A function that returns the length of the  shortest path.
-  - **shortestPathDist:** It returns the vertices of the shortest path,In this function we used the dijkstra algorithm.
-  - **tsp :**Computes a list of consecutive nodes which go over all the nodes in cities.
-  - **Save :**the graph as to an json file.
+  - **Check if the graph is connected :** in this function we used BFS Algorithm
+  - **shortestPath:** It returns the vertices  and the length of the shortest path,In this function we used the dijkstra algorithm.
+  - **tsp :** Computes a list of consecutive nodes which go over all the nodes in cities.
+  - **Save :** the graph as to an json file.
   - **Load :** the graph from an json file.
 
 
