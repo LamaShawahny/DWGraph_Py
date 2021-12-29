@@ -52,37 +52,34 @@ class GraphAlgo:
 
     def Dikstra(self, start: int):
         for i in range(self._graph.v_size()):
-            self._pred.append(self._nill)
             self._dist.append(float('inf'))
-            self._visited.append( False)
-        print(len(self._dist))
-        self._dist[start] = 0
+            self._visited.append(False)
+            self._pred.append(-1)
+        self._dist[start]=0
+        dikstra1=[]
+        for i in self._graph.get_all_v():
+            dikstra1.append(self._graph.getNode(i))
+        while len(dikstra1) >0 :
+            u=self._graph.getNode(GraphAlgo.ExtractMin(self,dikstra1))
+            dikstra1.remove(self._graph.getNode(GraphAlgo.ExtractMin(self,dikstra1)))
+            for edge in self._graph.all_out_edges_of_node(u).keys():
+                e = self._graph.getEdge(u.key,edge)
+                v= e.dest
+                if self._visited[v] == False:
+                    t=self._dist[u.key]+self._graph.getEdge(u.key,v).weight
+                    if self._dist[v]>t:
+                        self._dist[v]=t
+                        self._pred[v]=u.key
+            self._visited[u.key]=True
 
-        for n in self._graph.get_all_v():
-            self._DikstraQ.append(n)
-
-        while len(self._DikstraQ) > 0:
-            u = self._graph.getNode(GraphAlgo.ExtractMin(self,self._DikstraQ))
-            if self._graph.getNode(GraphAlgo.ExtractMin(self,self._DikstraQ)) is not None:
-                del self._DikstraQ[self._graph.getNode(GraphAlgo.ExtractMin(self,self._DikstraQ)).key]
-            for e in self._graph.get_all_edges():
-                v = e.dest
-                print(len(self._visited))
-                if self._visited[v.key]== False:
-                    if self._graph.getEdge(u.key,v) is not None:
-                        t = self._dist[u.key] + self._graph.getEdge(u.key,v).weight
-                        if not self._dist[v] > t:
-                            self._dist[v] = t
-                            self._pred[v] = u.key
-        self._visited[u.key]=True
 
     def ExtractMin(self,list):
         index= -1
         min = float('inf')
         for i in range(len(list)-1):
-            if self._dist[list[i]] <= min:
-                min = self._dist[list[i]]
-                index = list[i]
+            if self._dist[list[i].key] <= min:
+                min = self._dist[list[i].key]
+                index = list[i].key
         return index
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
@@ -106,7 +103,7 @@ class GraphAlgo:
     def centerPoint(self) -> (int, float):
 
         #is connected
-        if GraphAlgo.isConnectes() is True:
+        if GraphAlgo.isConnected(self):
             n = self._graph.v_size()
             nVert =n
             leavs = []
@@ -153,7 +150,7 @@ class GraphAlgo:
         d = {}
         p = {}
         nill = -1
-        for n in self._graph.get_all_v:
+        for n in self._graph.get_all_v().values():
             color[n.key] = "white"
             d[n.key] = nill
             p[n.key] = nill
@@ -164,7 +161,8 @@ class GraphAlgo:
         n = self._graph.getNode(startnode)
         q.append(n)
         while len(q) > 0:
-            node = q.remove(len(q) - 1)
+            node = q[len(q)-1]
+            del q[len(q)-1]
             for edge in self._graph.all_out_edges_of_node(node.key):
                 i = self._graph.getNode(edge)
                 if i is not None:
@@ -184,17 +182,17 @@ class GraphAlgo:
             gra.add_edge(e.dest, e.src, e.weight)
         return gra
 
-    def isConnectes(self):
+    def isConnected(self):
         nill = -1
         node = self._graph.getNode(0)
         if node is not None:
-            d = DWGraph.BFS(node.key)
+            d = GraphAlgo.BFS(self,node.key)
             for i in range(len(d)):
                 if d[i] is nill:
                     return False
-            g = DWGraph.revresed()
+            g = GraphAlgo.revresed()
             node = g.getNode(0)
-            d = DWGraph.BFS(node.key)
+            d = GraphAlgo.BFS(self,node.key)
             for i in range(len(d)):
                 if d[i] is nill:
                     return False
