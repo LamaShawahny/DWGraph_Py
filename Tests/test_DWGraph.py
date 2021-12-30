@@ -90,6 +90,9 @@ class TestDWGraph(TestCase):
         assert 0 not in edge_in.keys()
 
         edge_in = gr.all_in_edges_of_node(3)
+        print ("test1")
+        print(edge_in.keys())
+        print(edge_in.values())
         assert 1 in edge_in.keys()
 
     def test_all_out_edges_of_node(self):
@@ -102,9 +105,12 @@ class TestDWGraph(TestCase):
         gr.add_edge(1, 0, 17)
         gr.add_edge(2, 1, 10)
         gr.add_edge(2, 4, 1.15)
-
+        print (gr.get_all_v())
+        print(gr.get_all_edges())
         edge_in = gr.all_out_edges_of_node(2)
-        assert 1 in edge_in.keys()
+        print("hello")
+        print(gr.all_out_edges_of_node(1))
+        assert 1 in edge_in.values()
 
         edge_in = gr.all_out_edges_of_node(1)
         assert 0 in edge_in.keys()
