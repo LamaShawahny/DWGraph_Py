@@ -42,10 +42,7 @@ class GraphAlgo:
             data_nodes.append(n_dict)
         data_edges = []
         for e in self._graph.get_all_edges:
-            e_dict ={}
-            e_dict["src"] = e.src
-            e_dict["dest"] = e.dest
-            e_dict["w"] = e.weight
+            e_dict = {"src": e.src, "dest": e.dest, "w": e.weight}
             data_edges.append(e_dict)
         with open(file_name, 'w') as outfile:
             json.dump(data_edges, outfile)

@@ -19,28 +19,6 @@ class TestDWGraph(TestCase):
         y = 8
         self.assertEqual(x, y)
 
-    def test_get_all_v(self):
-        gr = DWGraph()
-        for n in range(7):
-            gr.add_node(n)
-
-        gr.add_edge(4, 1, 1)
-        gr.add_edge(1, 0, 0.5)
-        gr.add_edge(1, 2, 1.313)
-        gr.add_edge(7, 2, 12)
-        gr.add_edge(1, 7, 40)
-        gr.add_edge(4, 5, 12)
-        gr.add_edge(3, 4, 22)
-        gr.add_edge(4, 3, 13)
-        gr.add_edge(6, 5, 19)
-
-        nodes = gr.get_all_v()
-
-        assert len(nodes) == 6 + 1
-
-        assert isinstance(nodes, dict)
-        for i in range(6):
-            assert i in nodes.keys()
 
     def test_e_size(self):
         g = DWGraph()
@@ -68,54 +46,47 @@ class TestDWGraph(TestCase):
         y = 6
         self.assertEqual(x, y)
 
-    def test_all_in_edges_of_node(self):
-        gr = DWGraph()
-        for n in range(7):
-            gr.add_node(n)
+    def test_all_in_edges(self):
+        graph = DWGraph()
+        for i in range(10):
+            graph.add_node(i)
+        for i in range(3, 7):
+            graph.add_edge(i, 0, 3)
+        edges = graph.all_in_edges_of_node(0)
+        self.assertEqual(4, len(edges))
+        for i in range(-10, 3):
+            self.assertFalse(i in edges.keys())
+        for i in range(7, 100):
+            self.assertFalse(i in edges.keys())
+        for i in range(1, 10):
+            self.assertEqual({}, graph.all_in_edges_of_node(i))
 
-        gr.add_edge(0, 1, 1)
-        gr.add_edge(1, 0, 112)
-        gr.add_edge(1, 2, 1.3)
-        gr.add_edge(2, 3, 1.1)
-        gr.add_edge(1, 3, 10)
-        gr.add_edge(2, 1, 10)
-        gr.add_edge(4, 5, 12)
-        gr.add_edge(3, 4, 22)
-        gr.add_edge(6, 3, 18)
+    def test_get_all_v(self):
+        graph = DWGraph()
+        for i in range(10):
+            graph.add_node(i)
+        nodes = graph.get_all_v()
+        keys = nodes.keys()
+        for i in range(10):
+            self.assertTrue(i in keys)
+        self.assertFalse(-1 in keys)
+        self.assertEqual(10, len(keys))
 
-        edge_in = gr.all_in_edges_of_node(0)
-        assert 2 not in edge_in.keys()
+    def test_all_out_edges(self):
+        graph = DWGraph()
+        for i in range(10):
+            graph.add_node(i)
+        for i in range(3, 7):
+            graph.add_edge(0, i, 1)
+        edges = graph.all_out_edges_of_node(0)
+        self.assertEqual(4, len(edges))
+        for i in range(-10, 3):
+            self.assertFalse(i in edges.keys())
+        for i in range(7, 100):
+            self.assertFalse(i in edges.keys())
+        for i in range(1, 10):
+            self.assertEqual({}, graph.all_out_edges_of_node(i))
 
-        edge_in = gr.all_in_edges_of_node(1)
-        assert 0 not in edge_in.keys()
-
-        edge_in = gr.all_in_edges_of_node(3)
-        print ("test1")
-        print(edge_in.keys())
-        print(edge_in.values())
-        assert 1 in edge_in.keys()
-
-    def test_all_out_edges_of_node(self):
-        gr = DWGraph()
-
-        for n in range(5):
-            gr.add_node(n)
-
-        gr.add_edge(0, 1, 1)
-        gr.add_edge(1, 0, 17)
-        gr.add_edge(2, 1, 10)
-        gr.add_edge(2, 4, 1.15)
-        print (gr.get_all_v())
-        print(gr.get_all_edges())
-        edge_in = gr.all_out_edges_of_node(2)
-        print("hello")
-        print(gr.all_out_edges_of_node(1))
-        assert 1 in edge_in.values()
-
-        edge_in = gr.all_out_edges_of_node(1)
-        assert 0 in edge_in.keys()
-
-        assert isinstance(edge_in, dict) == True
 
     def test_get_mc(self):
         gr = DWGraph()

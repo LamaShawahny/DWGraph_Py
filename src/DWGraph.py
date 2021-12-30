@@ -21,18 +21,16 @@ class DWGraph() :
 
    def all_in_edges_of_node(self, id1: int):
        in_edges = {}
-       edges = DWGraph.get_all_edges(self)
-       for e in edges:
-           if e.dest == id1:
-               in_edges[e.src] = e.weight
+       for e in self._edges.keys():
+           if self._edges[e].dest.key == id1:
+               in_edges[self._edges[e].src] = self._edges[e].weight
        return in_edges
 
    def all_out_edges_of_node(self, id1: int):
        out_edges = {}
-       edges = DWGraph.get_all_edges(self)
-       for e in edges:
-           if e.src == id1:
-               out_edges[e.dest] =e.weight
+       for e in self._edges.keys():
+           if self._edges[e].src.key == id1:
+               out_edges[self._edges[e].dest] =self._edges[e].weight
        return out_edges
 
    def get_mc(self):
