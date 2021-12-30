@@ -1,6 +1,7 @@
 # Here is the Algorithms for our graph
 from typing import List
 import matplotlib.pyplot as plt
+from queue import PriorityQueue
 import math
 from src.NodeData import NodeData
 from src.EdgeData import EdgeData
@@ -57,9 +58,10 @@ class GraphAlgo:
         dikstra1=[]
         for i in self._graph.get_all_v():
             dikstra1.append(self._graph.getNode(i))
+        print(len(dikstra1))
         while len(dikstra1) >0 :
             u=self._graph.getNode(GraphAlgo.ExtractMin(self,dikstra1))
-            dikstra1.remove(self._graph.getNode(GraphAlgo.ExtractMin(self,dikstra1)))
+            dikstra1.remove(u)
             for edge in self._graph.all_out_edges_of_node(u).keys():
                 e = self._graph.getEdge(u.key,edge)
                 v= e.dest
@@ -74,12 +76,11 @@ class GraphAlgo:
     def ExtractMin(self,list):
         index= -1
         min = float('inf')
-        for i in range(len(list)-1):
+        for i in range(len(list)):
             if self._dist[list[i].key] <= min:
                 min = self._dist[list[i].key]
                 index = list[i].key
         return index
-
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         if id1 == id2:
             return -1, []
@@ -194,6 +195,7 @@ class GraphAlgo:
             for i in range(len(d)):
                 if d[i] is nill:
                     return False
+        return True
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         x=0

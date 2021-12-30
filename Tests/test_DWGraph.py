@@ -60,7 +60,6 @@ class TestDWGraph(TestCase):
         self.assertEqual(x, y)
 
 
-
     def test_get_all_v(self):
         graph = DWGraph()
         for i in range(10):
@@ -86,7 +85,6 @@ class TestDWGraph(TestCase):
             self.assertFalse(i in edges.keys())
         for i in range(1, 10):
             self.assertEqual({}, graph.all_out_edges_of_node(i))
-
 
     def test_get_mc(self):
         gr = DWGraph()
