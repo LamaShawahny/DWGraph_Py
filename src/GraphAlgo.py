@@ -1,5 +1,6 @@
 # Here is the Algorithms for our graph
 from typing import List
+import matplotlib.pyplot as plt
 import math
 from src.NodeData import NodeData
 from src.EdgeData import EdgeData
