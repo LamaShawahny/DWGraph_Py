@@ -19,7 +19,20 @@ class TestDWGraph(TestCase):
         y = 8
         self.assertEqual(x, y)
 
-
+    def test_all_in_edges(self):
+        graph = DWGraph()
+        for i in range(10):
+            graph.add_node(i)
+        for i in range(3, 7):
+            graph.add_edge(i, 0, 3)
+        edges = graph.all_in_edges_of_node(0)
+        self.assertEqual(4, len(edges))
+        for i in range(-10, 3):
+            self.assertFalse(i in edges.keys())
+        for i in range(7, 100):
+            self.assertFalse(i in edges.keys())
+        for i in range(1, 10):
+            self.assertEqual({}, graph.all_in_edges_of_node(i))
     def test_e_size(self):
         g = DWGraph()
         for n in range(4):
@@ -46,20 +59,7 @@ class TestDWGraph(TestCase):
         y = 6
         self.assertEqual(x, y)
 
-    def test_all_in_edges(self):
-        graph = DWGraph()
-        for i in range(10):
-            graph.add_node(i)
-        for i in range(3, 7):
-            graph.add_edge(i, 0, 3)
-        edges = graph.all_in_edges_of_node(0)
-        self.assertEqual(4, len(edges))
-        for i in range(-10, 3):
-            self.assertFalse(i in edges.keys())
-        for i in range(7, 100):
-            self.assertFalse(i in edges.keys())
-        for i in range(1, 10):
-            self.assertEqual({}, graph.all_in_edges_of_node(i))
+
 
     def test_get_all_v(self):
         graph = DWGraph()
