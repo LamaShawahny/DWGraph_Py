@@ -35,63 +35,78 @@ class GraphAlgo:
                 self._graph.add_edge(id1=e["src"], id2=["dest"], weight=data["w"])
 
     def save_to_json(self, file_name: str) -> bool:
-        data_nodes=[]
-        for n in self._graph.get_all_v:
-            n_dict = {}
-            n_dict["pos"] = n.location
-            n_dict["id"] = n.key
-            data_nodes.append(n_dict)
-        data_edges = []
-        for e in self._graph.get_all_edges:
-            e_dict = {"src": e.src, "dest": e.dest, "w": e.weight}
-            data_edges.append(e_dict)
-        with open(file_name, 'w') as outfile:
-            json.dump(data_edges, outfile)
-            json.dump(data_nodes, outfile)
+        edges = self._graph.get_all_edges()
+        nodes = self._graph.get_all_v()
+        json_file = {}
+        jsonEdges = []
+        jsonNodes = []
+
+        for e in edges:
+            parsed_edge = {'src': e.src.key, 'dest': e.dest.key, 'w': e.weight}
+            jsonEdges.append(parsed_edge)
+
+        for k in nodes.values():
+            if k.getPos() is not None:
+                pos = k.getPos()
+                parsed_node = {'pos': pos, 'id': k.key}
+            else:
+                parsed_node = {'id': k.key}
+            jsonNodes.append(parsed_node)
+
+        json_file["Edges"] = jsonEdges
+        json_file["Nodes"] = jsonNodes
+        print(json_file)
+        with open(file_name, 'x') as fp:
+            json.dump(json_file, fp)
+            return True
 
     def Dikstra(self, start: int):
+        self._pred = []
+        self._dist = []
+        self._visited = []
         for i in range(self._graph.v_size()):
             self._dist.append(float('inf'))
             self._visited.append(False)
             self._pred.append(-1)
-        self._dist[start]=0
-        dikstra1=[]
+        self._dist[start] = 0
+        dikstra1 = []
         for i in self._graph.get_all_v():
-            dikstra1.append(self._graph.getNode(i))
-        print(len(dikstra1))
-        while len(dikstra1) >0 :
-            u=self._graph.getNode(GraphAlgo.ExtractMin(self,dikstra1))
+            dikstra1.append(self._graph.getNode(i.key))
+        while len(dikstra1) > 1:
+            u = self._graph.getNode(GraphAlgo.ExtractMin(self, dikstra1))
             dikstra1.remove(u)
-            for edge in self._graph.all_out_edges_of_node(u).keys():
-                e = self._graph.getEdge(u.key,edge)
-                v= e.dest
+            for edge in self._graph.all_out_edges_of_node(u.key).keys():
+                e = self._graph.getEdge(u.key, edge.key)
+                v = e.dest.key
                 if self._visited[v] == False:
-                    t=self._dist[u.key]+self._graph.getEdge(u.key,v).weight
-                    if self._dist[v]>t:
-                        self._dist[v]=t
-                        self._pred[v]=u.key
-            self._visited[u.key]=True
+                    t = self._dist[u.key] + self._graph.getEdge(u.key, v).weight
+                    if self._dist[v] > t:
+                        self._dist[v] = t
+                        self._pred[v] = u.key
+            self._visited[u.key] = True
 
-
-    def ExtractMin(self,list):
-        index= -1
+    def ExtractMin(self, list):
+        index = -1
         min = float('inf')
         for i in range(len(list)):
             if self._dist[list[i].key] <= min:
                 min = self._dist[list[i].key]
                 index = list[i].key
         return index
+
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         if id1 == id2:
-            return -1, []
+            l=[]
+            l.append(self._graph.getNode(id1))
+            return 0, l
         if self._graph.getNode(id1) is None or self._graph.getNode(id2) is None :
             return -1 ,[]
-        GraphAlgo.Dikstra(self,id1)
+        self.Dikstra(id1)
         path=[]
         t = id2
         n = self._graph.getNode(t)
         path.append(n)
-        while t is not id1 :
+        while t != id1 :
             t =self._pred[t]
             path.append(self._graph.getNode(t))
         new_path = []
@@ -199,36 +214,43 @@ class GraphAlgo:
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         x=0
-        ToGo = set()
+        ToGo = []
         path=[]
         path.append(node_lst[0])
         for i in range(len(node_lst)):
-            ToGo.add(node_lst[i].key)
+            ToGo.append(node_lst[i])
         while len(ToGo)>0:
-            srcToDstPath = GraphAlgo.shortest_path(path[len(path)-1],ToGo[x])
-            x = x+1
-            for n in self._graph.get_all_v:
-                ToGo.remove(n.key)
-                path.append(n)
+            srcToDstPath = self.shortest_path(path[len(path)-1],ToGo[0])[1]
+            for n in srcToDstPath:
+                if n.key in ToGo:
+                    if n.key in ToGo:
+                        if len(srcToDstPath) != 1:
+                            ToGo.remove(n.key)
+                            path.append(n.key)
+                        else:
+                            ToGo.remove(n.key)
 
         return path
 
     def plot_graph(self) -> None:
-        vertex = self._graph.get_all_v()
-        ed = self._graph.get_all_edges()
-        for node in vertex.values():
-            x = node.location[0]
-            y = node.location[1]
-            plt.plot(x, y, markersize=12, marker="o", color="red")
-            plt.text(x, y, str(node.get_key()), color="green", fontsize=13)
+        v = self._graph.get_all_v()
+        e = self._graph.get_all_edges()
+        for nd in v:
+            nw = self._graph.getNode(nd)
+            x = nw.getPos()[0]
+            y = nw.getPos()[1]
+            plt.plot(x, y, markersize=10, marker="o", color="green")
+            plt.text(x, y, str(nd), color="black", fontsize=12)
+            for edge in self._graph.all_out_edges_of_node(nd):
+                pickNodeSrc = self._graph.getNode(nd)
+                pickNodeDst = self._graph.getNode(edge.key)
 
-        for edge in ed.values():
-            dstx = vertex[edge.getDest()].location[0]
-            dsty = vertex[edge.getDest()].location[1]
-            srcx = vertex[edge.getSrc()].location[0]
-            srcy = vertex[edge.getSrc()].location[1]
-            plt.annotate("", xy=(srcx, srcy), xytext=(dstx, dsty), arrowprops={'arrowstyle': "<-", 'lw': 3})
+                dstx = pickNodeDst.getPos()[0]
+                dsty = pickNodeDst.getPos()[1]
 
+                srcx = pickNodeSrc.getPos()[0]
+                srcy = pickNodeSrc.getPos()[1]
+                plt.annotate("", xy=(srcx, srcy), xytext=(dstx, dsty), arrowprops=dict(arrowstyle="<-"))
         plt.show()
 
 
