@@ -71,12 +71,7 @@ class DWGraph() :
            self._MC = self._MC + 1
            return True
 
-   def add_node(self, node_id: int, pos: tuple = None):
-       newNode = NodeData(node_id,pos)
-       if newNode not in self._nodes:
-           self._nodes[node_id]=newNode
-           self._MC = self._MC + 1
-           return True
+
 
    def remove_node(self, node_id: int):
        if self._nodes.__contains__(node_id) is True:

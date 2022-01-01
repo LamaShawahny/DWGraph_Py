@@ -34,22 +34,30 @@ class GraphAlgo:
                 self._graph.add_edge(id1=e["src"], id2=["dest"], weight=data["w"])
 
     def save_to_json(self, file_name: str) -> bool:
-        data_nodes=[]
-        for n in self._graph.get_all_v:
-            n_dict = {}
-            n_dict["pos"] = n.location
-            n_dict["id"] = n.key
-            data_nodes.append(n_dict)
-        data_edges = []
-        for e in self._graph.get_all_edges:
-            e_dict ={}
-            e_dict["src"] = e.src
-            e_dict["dest"] = e.dest
-            e_dict["w"] = e.weight
-            data_edges.append(e_dict)
-        with open(file_name, 'w') as outfile:
-            json.dump(data_edges, outfile)
-            json.dump(data_nodes, outfile)
+        edges = self._graph.get_all_edges()
+        nodes = self._graph.get_all_v()
+        json_file = {}
+        jsonEdges = []
+        jsonNodes = []
+
+        for e in edges:
+            parsed_edge = {'src': e.src.key, 'dest': e.dest.key, 'w': e.weight}
+            jsonEdges.append(parsed_edge)
+
+        for k in nodes:
+            if self._graph.getNode(k).pos is not None:
+                pos = self._graph.getNode(k).getPos()
+                parsed_node = {'pos': pos, 'id': k}
+            else:
+                parsed_node = {'id': k}
+            jsonNodes.append(parsed_node)
+
+        json_file["Edges"] = jsonEdges
+        json_file["Nodes"] = jsonNodes
+        print(json_file)
+        with open(file_name, 'x') as fp:
+            json.dump(json_file, fp)
+            return True
 
     def Dikstra(self, start: int):
         self._pred = []

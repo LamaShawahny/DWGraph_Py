@@ -46,3 +46,25 @@ class TestGraphAlgo(TestCase):
 
         g_algo = GraphAlgo(g)
         self.assertEqual(g_algo.centerPoint().key, 2)
+
+    def test_save_and_load_from_json(self):
+        g = DWGraph()
+        g.add_node(0, (0, 1, 2))
+        g.add_node(1, (3, 4, 5))
+        g.add_node(2, (6, 7, 8))
+        g.add_node(3, (7, 6, 5))
+        for i in range(3):
+            g.add_edge(i, i + 1, i + 2)
+        ga_original = GraphAlgo(g)
+        ga_original.save_to_json("check_file")
+        ga_loaded = GraphAlgo()
+        returned_bool = ga_loaded.load_from_json("check_file")
+        self.assertTrue(returned_bool)
+        self.assertEqual(ga_original, ga_loaded)
+        ga_original.DiGraph.graph.get(0).pos = (0, 1.1, 2)
+        self.assertNotEqual(ga_original, ga_loaded)
+        ga_original.DiGraph.graph.get(0).pos = (0, 1, 2)
+        self.assertEqual(ga_original, ga_loaded)
+        ga_original.DiGraph.remove_edge(0, 1)
+        self.assertNotEqual(ga_original, ga_loaded)
+        self.assertEqual(False, ga_original.load_from_json("non_existing_graph"))

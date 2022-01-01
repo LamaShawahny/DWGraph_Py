@@ -65,7 +65,7 @@ class TestDWGraph(TestCase):
         for i in range(10):
             graph.add_node(i)
         nodes = graph.get_all_v()
-        keys = nodes.keys()
+        keys = nodes
         for i in range(10):
             self.assertTrue(i in keys)
         self.assertFalse(-1 in keys)

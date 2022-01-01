@@ -13,6 +13,7 @@ class NodeData:
 
     def __init__(self, key):
         self.key = key
+        self.pos= [0,0]
 
 
     def getPos(self):
