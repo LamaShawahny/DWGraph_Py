@@ -88,8 +88,13 @@ def check3():
       :return:
       """
     g = DWGraph()  # creates an empty directed graph
-    for n in range(5):
-        g.add_node(n)
+    g.add_node(1,[3,4])
+    g.add_node(0, [1, 4])
+    g.add_node(2, [3, 4])
+    g.add_node(3, [2, 4])
+    g.add_node(4, [1, 1])
+    g.add_node(5, [3, 3])
+
     g.add_edge(0, 1, 1)
     g.add_edge(0, 4, 5)
     g.add_edge(1, 0, 1.1)

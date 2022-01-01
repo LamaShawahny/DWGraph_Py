@@ -1,12 +1,11 @@
 # Here is the Algorithms for our graph
 from typing import List
-import matplotlib.pyplot as plt
-from queue import PriorityQueue
 import math
 from src.NodeData import NodeData
 from src.EdgeData import EdgeData
 from src.DWGraph import DWGraph
 import queue
+import matplotlib.pyplot as plt
 import json
 class GraphAlgo:
     def __init__(self,graph):
@@ -35,30 +34,22 @@ class GraphAlgo:
                 self._graph.add_edge(id1=e["src"], id2=["dest"], weight=data["w"])
 
     def save_to_json(self, file_name: str) -> bool:
-        edges = self._graph.get_all_edges()
-        nodes = self._graph.get_all_v()
-        json_file = {}
-        jsonEdges = []
-        jsonNodes = []
-
-        for e in edges:
-            parsed_edge = {'src': e.src.key, 'dest': e.dest.key, 'w': e.weight}
-            jsonEdges.append(parsed_edge)
-
-        for k in nodes.values():
-            if k.getPos() is not None:
-                pos = k.getPos()
-                parsed_node = {'pos': pos, 'id': k.key}
-            else:
-                parsed_node = {'id': k.key}
-            jsonNodes.append(parsed_node)
-
-        json_file["Edges"] = jsonEdges
-        json_file["Nodes"] = jsonNodes
-        print(json_file)
-        with open(file_name, 'x') as fp:
-            json.dump(json_file, fp)
-            return True
+        data_nodes=[]
+        for n in self._graph.get_all_v:
+            n_dict = {}
+            n_dict["pos"] = n.location
+            n_dict["id"] = n.key
+            data_nodes.append(n_dict)
+        data_edges = []
+        for e in self._graph.get_all_edges:
+            e_dict ={}
+            e_dict["src"] = e.src
+            e_dict["dest"] = e.dest
+            e_dict["w"] = e.weight
+            data_edges.append(e_dict)
+        with open(file_name, 'w') as outfile:
+            json.dump(data_edges, outfile)
+            json.dump(data_nodes, outfile)
 
     def Dikstra(self, start: int):
         self._pred = []
@@ -71,7 +62,7 @@ class GraphAlgo:
         self._dist[start] = 0
         dikstra1 = []
         for i in self._graph.get_all_v():
-            dikstra1.append(self._graph.getNode(i.key))
+            dikstra1.append(self._graph.getNode(i))
         while len(dikstra1) > 1:
             u = self._graph.getNode(GraphAlgo.ExtractMin(self, dikstra1))
             dikstra1.remove(u)
@@ -110,64 +101,43 @@ class GraphAlgo:
             t =self._pred[t]
             path.append(self._graph.getNode(t))
         new_path = []
-        for i in range(len(path)):
-            new_path.append(path[i])
-        return self._dist[id2] , new_path
+        k = len(path)-1
+        while k >= 0:
+            new_path.append(path[k].key)
+            k = k -1
+
+        return self._dist[id2], new_path
 
     def centerPoint(self) -> (int, float):
 
-        #is connected
-        if GraphAlgo.isConnected(self):
-            n = self._graph.v_size()
-            nVert =n
-            leavs = []
-            degrees=[]
-            levels =[]
-            for i in range[n]:
-                crt=0
-                for e in self._graph.get_all_edges():
-                    crt= crt +1
-
-                degrees[i]=crt
-                if degrees[i] == 1:
-                    leavs.append(i)
-            maxLevel=0
-            while(nVert>2):
-                leaf= leavs.remove(len(leavs)-1)
-                degrees[leaf]=0
-                for k in self._graph.all_in_edges_of_node(leaf):
-                    v= k.dest
-                    degrees[v]=degrees[v]-1
-                    self._graph.remove_edge(v,leaf)
-                    nVert=nVert-1
-                    if degrees[v] == 1:
-                        leavs.append(v)
-                        levels[v]=levels[leaf]+1
-                        maxLevel= max(maxLevel,levels[v])
-            centers =[]
-            for i in range[n]:
-                if levels[i] is maxLevel:
-                    centers.append(i)
-            numCenters = len(centers)
-            if numCenters == 2:
-                radius =maxLevel+1
-                diameter = 2*radius-1
-            else:
-                radius =maxLevel
-                diameter = 2*radius
-            return self._graph.getNode(centers[0])
-        else:
+        if self.isConnected() == False:
             return None
+        else:
+            shortestPathSum={}
+            for n in self._graph.get_all_v():
+                shortestPathSum[n]=0
+            returnCenter= self._graph.getNode(0).key
+            for srcnode in self._graph.get_all_v():
+                src=srcnode
+                for destnode in self._graph.get_all_v():
+                    dst=destnode
+                    pathLenSrcToDst=self.shortest_path(src,dst)[0]
+                    if src!=dst and shortestPathSum[src]<pathLenSrcToDst:
+                        shortestPathSum[src]=pathLenSrcToDst
+                if shortestPathSum[returnCenter] > shortestPathSum[src]:
+                    returnCenter = src
+        return self._graph.getNode(returnCenter)
+
 
     def BFS(self, startnode):
         color = {}
         d = {}
         p = {}
         nill = -1
-        for n in self._graph.get_all_v().values():
-            color[n.key] = "white"
-            d[n.key] = nill
-            p[n.key] = nill
+        for n in self._graph.get_all_v():
+            color[n] = "white"
+            d[n] = nill
+            p[n] = None
         color[startnode] = "gray"
         d[startnode] = 0
         p[startnode] = None
@@ -178,21 +148,21 @@ class GraphAlgo:
             node = q[len(q)-1]
             del q[len(q)-1]
             for edge in self._graph.all_out_edges_of_node(node.key):
-                i = self._graph.getNode(edge)
+                i = self._graph.getNode(edge.key)
                 if i is not None:
                     if color[i.key] == "white":
                         color[i.key] = "gray"
                         d[i.key] = d[node.key] + 1
                         p[i.key] = node
                         q.append(i)
-        color[node.key] = "black"
         return d
 
-    def revresed(self):
+    def revresed(self ,g):
         gra = DWGraph()
-        for n in self._graph.get_all_v():
-            gra.add_node(n.key)
-        for e in self._graph.get_all_edges:
+        ls=g.get_all_v()
+        for n in ls:
+            gra.add_node(n)
+        for e in g.get_all_edges():
             gra.add_edge(e.dest, e.src, e.weight)
         return gra
 
@@ -204,7 +174,7 @@ class GraphAlgo:
             for i in range(len(d)):
                 if d[i] is nill:
                     return False
-            g = GraphAlgo.revresed()
+            g = self.revresed(self._graph)
             node = g.getNode(0)
             d = GraphAlgo.BFS(self,node.key)
             for i in range(len(d)):
@@ -252,8 +222,3 @@ class GraphAlgo:
                 srcy = pickNodeSrc.getPos()[1]
                 plt.annotate("", xy=(srcx, srcy), xytext=(dstx, dsty), arrowprops=dict(arrowstyle="<-"))
         plt.show()
-
-
-
-
-

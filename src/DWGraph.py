@@ -14,7 +14,7 @@ class DWGraph() :
       return len(self._edges)
 
    def get_all_v(self):
-       return self._nodes
+       return self._nodes.keys()
 
    def get_all_edges(self):
        return self._edges.values()# edges-> edge data-> (id1 is dest) rfeturn dic of the sources
@@ -66,6 +66,13 @@ class DWGraph() :
 
    def add_node(self, node_id: int, pos: tuple = None):
        newNode = NodeData(node_id)
+       if newNode not in self._nodes:
+           self._nodes[node_id]=newNode
+           self._MC = self._MC + 1
+           return True
+
+   def add_node(self, node_id: int, pos: tuple = None):
+       newNode = NodeData(node_id,pos)
        if newNode not in self._nodes:
            self._nodes[node_id]=newNode
            self._MC = self._MC + 1
