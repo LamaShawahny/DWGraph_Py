@@ -52,6 +52,8 @@ Complexity of this algorithm is : O(v+e) where v=vertices, e=edges of the graph.
   - **tsp :** Computes a list of consecutive nodes which go over all the nodes in cities.
   - **Save :** the graph as to an json file.
   - **Load :** the graph from an json file.
+  - **center :**  Finds the node that has the shortest distance to it's farthest node.
+  - **plot :** Creates and draw the graph 
 
 
 
