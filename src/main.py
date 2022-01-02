@@ -38,7 +38,7 @@ def check0():
     g.add_edge(1, 3, 1.9)
     g.remove_edge(1, 3)
     g.add_edge(1, 3, 10)
-    print(g)  # prints the __repr__ (func output)
+    print(g)  # prints the _repr_ (func output)
     print(g.get_all_v())  # prints a dict with all the graph's vertices.
     print(g.all_in_edges_of_node(1))
     print(g.all_out_edges_of_node(1))
@@ -88,22 +88,53 @@ def check3():
       :return:
       """
     g = DWGraph()  # creates an empty directed graph
-    g.add_node(1,[3,4])
-    g.add_node(0, [1, 4])
-    g.add_node(2, [3, 4])
-    g.add_node(3, [2, 4])
-    g.add_node(4, [1, 1])
-    g.add_node(5, [3, 3])
 
+    g.add_node(0, [0.9, 1.30])
+    g.add_node(1,[0.9,3.30])
+    g.add_node(2, [1.10, 3.30])
+    g.add_node(3, [1.10, 1.30])
+
+    g.add_node(4,[1.30,3.30])
+    g.add_node(5, [1.30, 1.30])
+    g.add_node(6, [1.50, 3.30])
+    g.add_node(7, [1.50, 1.30])
+
+
+    g.add_node(8,[1.8,3.30])
+    g.add_node(9, [1.8, 1.30])
+    g.add_node(10, [2.30, 3.30])
+    g.add_node(11, [2.30, 2.80])
+    g.add_node(12, [1.80, 2.80])
+
+
+    g.add_edge(8, 10, 1)
+    g.add_edge(12, 11, 1)
+    g.add_edge(12, 9, 1.1)
+    g.add_edge(11, 10, 1.3)
+    g.add_edge(8, 12, 1.1)
+
+
+    g.add_edge(0, 3, 1)
     g.add_edge(0, 1, 1)
-    g.add_edge(0, 4, 5)
     g.add_edge(1, 0, 1.1)
     g.add_edge(1, 2, 1.3)
-    g.add_edge(1, 3, 1.9)
     g.add_edge(2, 3, 1.1)
-    g.add_edge(3, 4, 2.1)
-    g.add_edge(4, 2, .5)
-    g_algo = GraphAlgo(g)
+
+    g.add_edge(4, 6, 1)
+    g.add_edge(4, 5, 1)
+    g.add_edge(6, 7, 1)
+    g.add_edge(5, 7, 1)
+    g.add_edge(7, 5, 1)
+
+
+
+    g.add_edge(5, 4, 1.1)
+    g.add_edge(1, 2, 1.3)
+    g.add_edge(2, 3, 1.1)
+
+    
+    g_algo = GraphAlgo()
+    g_algo.init(g)
     # print(g_algo.centerPoint())
     # print(g_algo.TSP([1, 2, 4]))
     g_algo.plot_graph()

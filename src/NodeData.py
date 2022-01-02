@@ -7,13 +7,13 @@ class NodeData:
         self.tag = tag
         self.pos = pos
 
-    def __init__(self, key,pos):
+    def __init__(self, key, pos: tuple = None):
         self.key = key
         self.pos=pos
-
-    def __init__(self, key):
-        self.key = key
-        self.pos= [0,0]
+    #
+    # def __init__(self, key):
+    #     self.key = key
+    #     self.pos= [0,0]
 
 
     def getPos(self):

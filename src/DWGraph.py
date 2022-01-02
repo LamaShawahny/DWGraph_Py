@@ -65,7 +65,7 @@ class DWGraph() :
        return True
 
    def add_node(self, node_id: int, pos: tuple = None):
-       newNode = NodeData(node_id)
+       newNode = NodeData(node_id,pos)
        if newNode not in self._nodes:
            self._nodes[node_id]=newNode
            self._MC = self._MC + 1
