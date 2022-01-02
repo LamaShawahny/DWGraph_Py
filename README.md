@@ -1,10 +1,11 @@
 # Directed Weighted Graph
 
-### Task
+### Task :
 
 Design and implement an Directed Weighted graph or in other words Assigment 2  in PYTHON .
 
 ![OOP IMG](https://user-images.githubusercontent.com/74476764/147874740-29a6c7aa-fe2a-42b9-a87f-47ffd90250ab.jpeg)
+ Photoge of a graph that we created using Plot function .
 
 ### Design:
 - This class represents a directed weighted graph
