@@ -8,7 +8,7 @@ import queue
 import matplotlib.pyplot as plt
 import json
 class GraphAlgo:
-    def __init__(self,graph):
+    def init(self,graph):
         self._q = []
         self._DikstraQ = []
         self._color = []
@@ -24,6 +24,8 @@ class GraphAlgo:
         return self._graph
 
     def load_from_json(self, file_name: str) -> bool:
+        g= DWGraph()
+        self.init(g)
         with open(file_name, 'r') as f:
             data = json.loads(f.read())
             nodes = data["Nodes"]
@@ -31,7 +33,8 @@ class GraphAlgo:
                 self._graph.add_node(node_id=v["id"], pos=v["pos"])
             edges = data["Edges"]
             for e in edges:
-                self._graph.add_edge(id1=e["src"], id2=["dest"], weight=data["w"])
+                self._graph.add_edge(id1=e["src"], id2=e["dest"], weight=e["w"])
+        return True
 
     def save_to_json(self, file_name: str) -> bool:
         edges = self._graph.get_all_edges()

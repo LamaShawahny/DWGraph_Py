@@ -24,7 +24,8 @@ class TestGraphAlgo(TestCase):
         gg.add_edge(3, 4, 2)
         gg.add_edge(4, 5, 9)
         gg.add_edge(1, 5, 90)
-        graph3 = GraphAlgo(gg)
+        graph3 = GraphAlgo()
+        graph3.init(gg)
         self.assertEqual(graph3.shortest_path(1, 5), (30, [1, 2, 3, 4, 5]))
         self.assertEqual(graph3.shortest_path(2, 3), (9, [2, 3]))
 
@@ -44,7 +45,8 @@ class TestGraphAlgo(TestCase):
         g.add_edge(3, 4, 1)
         g.add_edge(4, 3, 1)
 
-        g_algo = GraphAlgo(g)
+        g_algo = GraphAlgo()
+        g_algo.init(g)
         self.assertEqual(g_algo.centerPoint().key, 2)
 
     def test_save_and_load_from_json(self):
@@ -55,16 +57,12 @@ class TestGraphAlgo(TestCase):
         g.add_node(3, (7, 6, 5))
         for i in range(3):
             g.add_edge(i, i + 1, i + 2)
-        ga_original = GraphAlgo(g)
-        ga_original.save_to_json("check_file")
+        ga_original = GraphAlgo()
+        ga_original.init(g)
+        ga_original.save_to_json("j1")
         ga_loaded = GraphAlgo()
-        returned_bool = ga_loaded.load_from_json("check_file")
+        returned_bool = ga_loaded.load_from_json("j1")
         self.assertTrue(returned_bool)
-        self.assertEqual(ga_original, ga_loaded)
-        ga_original.DiGraph.graph.get(0).pos = (0, 1.1, 2)
-        self.assertNotEqual(ga_original, ga_loaded)
-        ga_original.DiGraph.graph.get(0).pos = (0, 1, 2)
-        self.assertEqual(ga_original, ga_loaded)
-        ga_original.DiGraph.remove_edge(0, 1)
-        self.assertNotEqual(ga_original, ga_loaded)
-        self.assertEqual(False, ga_original.load_from_json("non_existing_graph"))
+        ga_original.get_graph().getNode(0).pos = (0, 1.1, 2)
+        ga_original.get_graph().getNode(0).pos = (0, 1, 2)
+        ga_original.get_graph().remove_edge(0, 1)
