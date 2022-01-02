@@ -16,7 +16,7 @@ Therefore, the appropriate data structure for performing operations on a very la
 2. HashMap for edges where the key is String that contains the src and dest of the edge ...
 - 
 
-### Methods :
+### Main Methods :
 #### DWGraph :
 - getNode-Return vertex by key ,complexity O(1)
 - getEdge -Return edge between 2 vertices - performed by checking the existence of one vertex in the list of neighbors .
