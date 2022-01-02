@@ -200,17 +200,14 @@ class GraphAlgo:
         path.append(node_lst[0])
         for i in range(len(node_lst)):
             ToGo.append(node_lst[i])
-        while len(ToGo)>0:
+        while len(ToGo)>0 :
             srcToDstPath = self.shortest_path(path[len(path)-1],ToGo[0])[1]
             for n in srcToDstPath:
-                print(type(n))
+                print(n)
                 if n in ToGo:
-                    if n in ToGo:
-                        if len(srcToDstPath) != 1:
-                            ToGo.remove(n)
-                            path.append(n)
-                        else:
-                            ToGo.remove(n)
+                    ToGo.remove(n)
+                    if path[len(path)-1] != n:
+                        path.append(n)
 
         return path
 

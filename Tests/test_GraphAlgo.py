@@ -70,7 +70,7 @@ class TestGraphAlgo(TestCase):
     def test_TSP(self):
         list =[]
         g = DWGraph()
-        for i in range(3):
+        for i in range(4):
             g.add_node(i)
             list.append(i)
         g.add_edge(0,1,10)
