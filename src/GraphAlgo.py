@@ -99,7 +99,7 @@ class GraphAlgo:
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         if id1 == id2:
             l=[]
-            l.append(self._graph.getNode(id1))
+            l.append(id1)
             return 0, l
         if self._graph.getNode(id1) is None or self._graph.getNode(id2) is None :
             return -1 ,[]
@@ -203,13 +203,14 @@ class GraphAlgo:
         while len(ToGo)>0:
             srcToDstPath = self.shortest_path(path[len(path)-1],ToGo[0])[1]
             for n in srcToDstPath:
-                if n.key in ToGo:
-                    if n.key in ToGo:
+                print(type(n))
+                if n in ToGo:
+                    if n in ToGo:
                         if len(srcToDstPath) != 1:
-                            ToGo.remove(n.key)
-                            path.append(n.key)
+                            ToGo.remove(n)
+                            path.append(n)
                         else:
-                            ToGo.remove(n.key)
+                            ToGo.remove(n)
 
         return path
 

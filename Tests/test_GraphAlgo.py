@@ -66,3 +66,30 @@ class TestGraphAlgo(TestCase):
         ga_original.get_graph().getNode(0).pos = (0, 1.1, 2)
         ga_original.get_graph().getNode(0).pos = (0, 1, 2)
         ga_original.get_graph().remove_edge(0, 1)
+
+    def test_TSP(self):
+        list =[]
+        g = DWGraph()
+        for i in range(3):
+            g.add_node(i)
+            list.append(i)
+        g.add_edge(0,1,10)
+        g.add_edge(1, 0, 10)
+        g.add_edge(0,3,20)
+        g.add_edge(3,0,20)
+        g.add_edge(0, 2, 20)
+        g.add_edge(3, 0, 20)
+        g.add_edge(0, 2, 15)
+        g.add_edge(2, 0, 15)
+        g.add_edge(1, 3, 25)
+        g.add_edge(3, 1, 25)
+        g.add_edge(3, 2, 30)
+        g.add_edge(2, 3, 30)
+        g.add_edge(1, 2, 35)
+        g.add_edge(2, 1, 35)
+
+        g_algo = GraphAlgo()
+        g_algo.init(g)
+        self.assertEqual(g_algo.TSP(list), [0,1,2,3])
+
+
